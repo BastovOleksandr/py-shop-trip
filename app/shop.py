@@ -23,7 +23,7 @@ class Shop:
                                f"for {product_total} dollars\n")
 
         print(f"Date: "
-              f"{datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n"
+              f'{datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n'
               f"Thanks, {cust_name}, for your purchase!\n"
               f"You have bought:\n"
               f"{purchases_info}"
