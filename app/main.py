@@ -6,9 +6,8 @@ from app.shop import Shop
 
 
 def shop_trip() -> None:
-    path = os.getcwd()[:os.getcwd().rfind(os.sep) + 1] + "app" + os.sep
 
-    with open(f"{path}config.py", "r") as file:
+    with open(f"app{os.sep}config.json", "r") as file:
         trip_data = json.load(file)
 
     customers, shops = [], []
