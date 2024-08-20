@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 
 
 class Shop:
@@ -12,10 +13,10 @@ class Shop:
         all_products_total = 0
 
         for product, amount in product_cart.items():
-            product_total = amount * self.products[product]
+            product_total = amount * Decimal(str(self.products[product]))
 
-            if product_total == int(product_total):
-                product_total = int(product_total)
+            if product_total == product_total.to_integral():
+                product_total = product_total.to_integral()
 
             all_products_total += product_total
 
@@ -25,7 +26,7 @@ class Shop:
         print(f"Date: "
               f'{datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n'
               f"Thanks, {cust_name}, for your purchase!\n"
-              f"You have bought:\n"
+              "You have bought:\n"
               f"{purchases_info}"
               f"Total cost is {all_products_total} dollars\n"
-              f"See you again!\n")
+              "See you again!\n")

@@ -1,23 +1,26 @@
 import json
 import os
+from decimal import Decimal
 
 from app.customer import Customer
 from app.shop import Shop
 
 
 def shop_trip() -> None:
-
     with open(f"app{os.sep}config.json", "r") as file:
         trip_data = json.load(file)
 
     customers, shops = [], []
-    fuel_price = trip_data["FUEL_PRICE"]
+    fuel_price = Decimal(str(trip_data["FUEL_PRICE"]))
 
-    for customer in trip_data["customers"]:
-        customers.append(Customer(**customer))
+    for cust_characteristics in trip_data["customers"]:
+        cust_characteristics["car_characteristics"] = (
+            cust_characteristics.get("car"))
+        del cust_characteristics["car"]
+        customers.append(Customer(**cust_characteristics))
 
-    for shop in trip_data["shops"]:
-        shops.append(Shop(**shop))
+    for shop_characteristics in trip_data["shops"]:
+        shops.append(Shop(**shop_characteristics))
 
     for customer in customers:
         print(f"{customer.name} has {customer.money} dollars")

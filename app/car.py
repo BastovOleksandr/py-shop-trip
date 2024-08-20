@@ -1,7 +1,7 @@
-from dataclasses import dataclass
+from decimal import Decimal
 
 
-@dataclass
 class Car:
-    brand: str
-    fuel_consumption: float
+    def __init__(self, brand: str, fuel_consumption: Decimal) -> None:
+        self.brand = brand
+        self.fuel_consumption = Decimal(str(fuel_consumption))
