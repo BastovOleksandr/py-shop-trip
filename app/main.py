@@ -10,19 +10,18 @@ def shop_trip() -> None:
     with open(f"app{os.sep}config.json", "r") as file:
         trip_data = json.load(file)
 
-    customers, shops = [], []
+    shops = []
     fuel_price = Decimal(str(trip_data["FUEL_PRICE"]))
 
-    for cust_characteristics in trip_data["customers"]:
-        cust_characteristics["car_characteristics"] = (
-            cust_characteristics.get("car"))
-        del cust_characteristics["car"]
-        customers.append(Customer(**cust_characteristics))
+    for shop_data in trip_data["shops"]:
+        shops.append(Shop(**shop_data))
 
-    for shop_characteristics in trip_data["shops"]:
-        shops.append(Shop(**shop_characteristics))
+    for customer_data in trip_data["customers"]:
+        customer_data["car_data"] = customer_data.get("car")
+        del customer_data["car"]
 
-    for customer in customers:
+        customer = Customer(**customer_data)
+
         print(f"{customer.name} has {customer.money} dollars")
         cheap_shop, cheap_cost = customer.find_cheapest(shops, fuel_price)
 

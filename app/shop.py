@@ -1,11 +1,17 @@
 import datetime
 from decimal import Decimal
 
+from app.location import Location
+
 
 class Shop:
-    def __init__(self, name: str, location: list, products: dict) -> None:
+    def __init__(
+        self, name: str,
+        location: list[int, int],
+        products: dict
+    ) -> None:
         self.name = name
-        self.location = location
+        self.location = Location(*location)
         self.products = products
 
     def prints_receipt(self, product_cart: dict, cust_name: str) -> None:

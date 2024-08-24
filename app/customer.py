@@ -1,6 +1,7 @@
 from decimal import Decimal, ROUND_HALF_UP
 
 from app.car import Car
+from app.location import Location
 
 
 class Customer:
@@ -8,16 +9,16 @@ class Customer:
         self,
         name: str,
         product_cart: dict,
-        location: list,
+        location: list[int, int],
         money: Decimal,
-        car_characteristics: dict
+        car_data: dict
     ) -> None:
         self.name = name
         self.product_cart = product_cart
-        self.location = location
+        self.location = Location(*location)
         self.money = Decimal(str(money))
-        self.car = Car(**car_characteristics)
-        self.home_location = location
+        self.car = Car(**car_data)
+        self.home_location = self.location
 
     def find_cheapest(
             self,
@@ -26,9 +27,9 @@ class Customer:
     ) -> tuple:
         all_shops_total = {}
         for shop in shops:
-            fuel_cost = self.count_fuel_cost(
+            fuel_cost = self.car.count_fuel_cost(
+                self.location,
                 shop.location,
-                self.car,
                 fuel_price
             )
             products_cost = self.count_prod_cost(shop.products)
@@ -42,19 +43,6 @@ class Customer:
         cheapest_shop = min(all_shops_total, key=all_shops_total.get)
         return cheapest_shop, all_shops_total[cheapest_shop]
 
-    def count_fuel_cost(
-            self,
-            to_location: list,
-            car: Car,
-            fuel_price: Decimal
-    ) -> Decimal:
-        distance = (((self.location[0] - to_location[0]) ** 2
-                    + (self.location[1] - to_location[1]) ** 2)
-                    ** Decimal("0.5"))
-
-        return (distance * car.fuel_consumption
-                * Decimal("0.01") * fuel_price * 2)
-
     def count_prod_cost(self, prices: dict) -> Decimal:
         sum_prod_cost = Decimal("0")
 
@@ -63,7 +51,7 @@ class Customer:
 
         return sum_prod_cost
 
-    def ride_to(self, destination: list, place_name: str) -> None:
+    def ride_to(self, destination: Location, place_name: str) -> None:
         self.location = destination
         print(f"{self.name} rides to {place_name}\n")
 
